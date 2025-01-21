@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "imputationlibrary"
+version = "0.1.0"
+description = ""
+authors = ["alfieriek <alfieriek@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+matplotlib = "^3.5.0"  # Compatible with Python 3.8 and modern numpy
+numpy = "^1.22.0"      # Stable release for scientific computing
+pandas = "^1.3.0"      # Updated with better support for numpy >=1.22
+scikit-learn = "^1.0.0"  # Matches updated numpy and scipy versions
+scipy = "^1.7.0"       # Compatible with updated libraries
+seaborn = "^0.11.0"    # Supports matplotlib >=3.5 and pandas >=1.3
+statsmodels = "^0.13.0" # Works with the latest numpy/scipy
+
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
