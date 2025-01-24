@@ -2,21 +2,21 @@ import numpy as np
 import random
 import math
 
-def inputData(training_df, sliding_window_size = 0.1):
+def inputData(training_df, sliding_window_size=0.1):
     imputed_df = training_df.copy()
     for index, row in imputed_df.iterrows():
-        if (len(row)-row.count())>=1:
-            nan_columns = np.argwhere(np.isnan(row))
-            for col in nan_columns[0]:
-                index = imputed_df.index.get_loc(index)
-                rand_row = index
+        if row.isna().sum() >= 1:  # Check if there's at least one NaN in the row
+            nan_columns = row[row.isna()].index  # Get column names with NaN values
+            for col in nan_columns:
+                row_index = imputed_df.index.get_loc(index)
+                rand_row = row_index
                 window_size = sliding_window_size
-                while np.isnan(imputed_df.iloc[rand_row, col]):
-                    lower_bound = max(0, index-math.ceil((imputed_df.shape[0]-1)*window_size))
-                    upper_bound = min(index+math.ceil((imputed_df.shape[0]-1)*window_size), training_df.shape[0]-1)
+                while np.isnan(imputed_df.iloc[rand_row, imputed_df.columns.get_loc(col)]):
+                    lower_bound = max(0, row_index - math.ceil((imputed_df.shape[0] - 1) * window_size))
+                    upper_bound = min(row_index + math.ceil((imputed_df.shape[0] - 1) * window_size), training_df.shape[0] - 1)
                     rand_row = random.randint(lower_bound, upper_bound)
                     window_size += 0.02
-                imputed_df.iloc[index, col] = imputed_df.iloc[rand_row, col]
+                imputed_df.iloc[row_index, imputed_df.columns.get_loc(col)] = imputed_df.iloc[rand_row, imputed_df.columns.get_loc(col)]
     return imputed_df
 
 def inputTrainingData(training_df, sliding_window_size = 0.1):
